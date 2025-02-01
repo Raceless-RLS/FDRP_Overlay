@@ -65,9 +65,27 @@
 
             console.log('Updating box with values:', values);
 
-            // Check the relevant columns (B, C, D) for "X"
-            values.slice(1).forEach(row => {
-                console.log('Row data:', row);
-                if (row[1].toLowerCase().trim() === 'x') { // Check if "X" is in the "left" column (B)
-                    position = 'left';
-                    text = '';
+            // Check cells B2, C2, and D2 for "X"
+            if (values[1][1].toLowerCase().trim() === 'x') { // Check if "X" is in B2 (left)
+                position = 'left';
+                text = '';
+                hasX = true;
+            } else if (values[1][2].toLowerCase().trim() === 'x') { // Check if "X" is in C2 (OMT)
+                position = 'omt';
+                text = 'OMT';
+                hasX = true;
+            } else if (values[1][3].toLowerCase().trim() === 'x') { // Check if "X" is in D2 (right)
+                position = 'right';
+                text = '';
+                hasX = true;
+            }
+
+            console.log('Setting box position:', position);
+            box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
+            box.innerText = text; // Set the text to "OMT" if applicable
+        }
+
+        setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    </script>
+</body>
+</html>
