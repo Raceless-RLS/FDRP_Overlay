@@ -30,20 +30,28 @@
     <div class="box" id="box"></div>
     <script>
         async function fetchData() {
-            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSPUuDmSP6GI7k4g7E3qvzWk5FpupMyuiq1oCI1qCC-Xr98CjmneuqrdJoQre4QYGe8ZayAGtAv-1f7/pubhtml?gid=0&single=true');
-            const text = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            const rows = doc.querySelectorAll('table tbody tr');
-            const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
+            try {
+                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSPUuDmSP6GI7k4g7E3qvzWk5FpupMyuiq1oCI1qCC-Xr98CjmneuqrdJoQre4QYGe8ZayAGtAv-1f7/pubhtml?gid=0&single=true');
+                const text = await response.text();
+                console.log('Fetched data:', text);  // Log the raw HTML text
 
-            console.log(values);  // Log the fetched data to the console
-            updateBox(values);
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const rows = doc.querySelectorAll('table tbody tr');
+                const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
+
+                console.log('Parsed values:', values);  // Log the parsed values
+                updateBox(values);
+            } catch (error) {
+                console.error('Error fetching data:', error);  // Log any errors that occur
+            }
         }
 
         function updateBox(values) {
             const box = document.getElementById('box');
             let position = 'omt'; // Default position
+
+            console.log('Updating box with values:', values);  // Log the values being used for the update
 
             values.forEach(row => {
                 if (row[0] === 'X') {
@@ -55,6 +63,7 @@
                 }
             });
 
+            console.log('Setting box position:', position);  // Log the position being set
             box.className = 'box ' + position;
         }
 
