@@ -53,14 +53,14 @@
 
             console.log('Updating box with values:', values);
 
-            // Skip the header row and check Judge 1's row for "X"
+            // Skip the header row and focus on Judge 1's vote
             values.slice(1).forEach(row => {
                 console.log('Row data:', row);
-                if (row[1].toLowerCase() === 'x') { // Check if "X" is in the "left" column for Judge 1
+                if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "left" column for Judge 1
                     position = 'left';
-                } else if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "omt" column for Judge 1
+                } else if (row[3].toLowerCase() === 'x') { // Check if "X" is in the "omt" column for Judge 1
                     position = 'omt';
-                } else if (row[3].toLowerCase() === 'x') { // Check if "X" is in the "right" column for Judge 1
+                } else if (row[4].toLowerCase() === 'x') { // Check if "X" is in the "right" column for Judge 1
                     position = 'right';
                 }
             });
