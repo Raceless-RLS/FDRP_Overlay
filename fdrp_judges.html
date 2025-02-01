@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Overlay</title>
+    <title>Overlay Test</title>
     <style>
         .box {
             position: absolute;
@@ -37,6 +37,7 @@
             const rows = doc.querySelectorAll('table tbody tr');
             const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
 
+            console.log(values);  // Log the fetched data to the console
             updateBox(values);
         }
 
