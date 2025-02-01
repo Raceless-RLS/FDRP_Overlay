@@ -52,4 +52,57 @@
                 console.log('Fetched data:', text);
 
                 const parser = new DOMParser();
-                const doc = parser
+                const doc = parser.parseFromString(text, 'text/html');
+                const rows = doc.querySelectorAll('table tbody tr');
+                const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
+
+                console.log('Parsed values:', values);
+
+                updateBox(values);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function updateBox(values) {
+            const box = document.getElementById('box');
+            let position = 'omt'; // Default position
+            let text = ''; // Default text
+            let hasX = false; // Flag to check if there is an "X"
+            let xCount = 0; // Counter for "X"s
+
+            console.log('Updating box with values:', values);
+
+            // Check cells B2, C2, and D2 for "X" and count them
+            if (values[1] && values[1][1] && values[1][1].toLowerCase().trim() === 'x') { // Check if "X" is in B2 (left)
+                position = 'left';
+                text = '';
+                hasX = true;
+                xCount++;
+            } 
+            if (values[1] && values[1][2] && values[1][2].toLowerCase().trim() === 'x') { // Check if "X" is in C2 (OMT)
+                position = 'omt';
+                text = 'OMT';
+                hasX = true;
+                xCount++;
+            } 
+            if (values[1] && values[1][3] && values[1][3].toLowerCase().trim() === 'x') { // Check if "X" is in D2 (right)
+                position = 'right';
+                text = '';
+                hasX = true;
+                xCount++;
+            }
+
+            // If there are multiple "X"s, hide the box
+            if (xCount > 1) {
+                box.className = 'box hidden';
+            } else {
+                box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
+            }
+            box.innerText = text; // Set the text to "OMT" if applicable
+        }
+
+        setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    </script>
+</body>
+</html>
