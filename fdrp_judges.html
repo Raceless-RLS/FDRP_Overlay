@@ -29,6 +29,14 @@
         .omt {
             transform: translateX(-50%) translateY(-50%);
         }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
     </style>
 </head>
 <body>
@@ -56,6 +64,7 @@
             const box = document.getElementById('box');
             let position = 'omt'; // Default position
             let text = ''; // Default text
+            let hasX = false; // Flag to check if there is an "X"
 
             console.log('Updating box with values:', values);
 
@@ -65,17 +74,20 @@
                 if (row[1].toLowerCase() === 'x') { // Check if "X" is in the "left" column (B)
                     position = 'left';
                     text = '';
+                    hasX = true;
                 } else if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "omt" column (C)
                     position = 'omt';
                     text = 'OMT';
+                    hasX = true;
                 } else if (row[3].toLowerCase() === 'x') { // Check if "X" is in the "right" column (D)
                     position = 'right';
                     text = '';
+                    hasX = true;
                 }
             });
 
             console.log('Setting box position:', position);
-            box.className = 'box ' + position;
+            box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
             box.innerText = text; // Set the text to "OMT" if applicable
         }
 
