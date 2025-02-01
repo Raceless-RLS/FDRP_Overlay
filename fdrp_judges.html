@@ -11,12 +11,18 @@
             height: 100px;
             background-color: red;
             transition: transform 1s ease-in-out;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
         }
         .left {
-            transform: translateX(-100px);
+            transform: translateX(-200px) translateY(-50%);
         }
         .right {
-            transform: translateX(100px);
+            transform: translateX(200px) translateY(-50%);
+        }
+        .omt {
+            transform: translateX(-50%) translateY(-50%);
         }
     </style>
 </head>
@@ -32,15 +38,18 @@
 
         function updateBox(values) {
             const box = document.getElementById('box');
-            const leftColumn = values[1][0];
-            const rightColumn = values[1][1];
-            if (leftColumn === 'X') {
-                box.classList.remove('right');
-                box.classList.add('left');
-            } else if (rightColumn === 'X') {
-                box.classList.remove('left');
-                box.classList.add('right');
-            }
+            const rows = values.slice(1); // Skip the header row
+            let position = 'omt'; // Default position
+            rows.forEach(row => {
+                if (row[0] === 'X') {
+                    position = 'left';
+                } else if (row[1] === 'X') {
+                    position = 'omt';
+                } else if (row[2] === 'X') {
+                    position = 'right';
+                }
+            });
+            box.className = 'box ' + position;
         }
 
         setInterval(fetchData, 5000); // Fetch data every 5 seconds
