@@ -46,6 +46,8 @@
     <div class="box" id="box"></div>
     <script>
         let previousPosition = '';
+        let debounceTimer;
+
         async function fetchData() {
             try {
                 const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSPUuDmSP6GI7k4g7E3qvzWk5FpupMyuiq1oCI1qCC-Xr98CjmneuqrdJoQre4QYGe8ZayAGtAv-1f7/pub?output=csv');
@@ -93,10 +95,16 @@
             // If there are multiple "X"s, hide the box
             if (xCount > 1) {
                 box.className = 'box hidden';
-            } else if (position !== previousPosition) {
-                box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
-                previousPosition = position;
-                box.innerText = text; // Set the text to "OMT" if applicable
+            } else {
+                // Use a debounce timer to stabilize the updates
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    if (position !== previousPosition) {
+                        box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
+                        previousPosition = position;
+                        box.innerText = text; // Set the text to "OMT" if applicable
+                    }
+                }, 500); // Adjust the debounce delay as needed
             }
         }
 
