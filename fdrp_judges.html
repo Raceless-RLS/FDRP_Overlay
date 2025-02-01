@@ -96,8 +96,8 @@
             } else if (position !== previousPosition) {
                 box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
                 previousPosition = position;
+                box.innerText = text; // Set the text to "OMT" if applicable
             }
-            box.innerText = text; // Set the text to "OMT" if applicable
         }
 
         setInterval(fetchData, 5000); // Fetch data every 5 seconds
