@@ -51,10 +51,14 @@
                 const text = await response.text();
                 console.log('Fetched data:', text);
 
-                const rows = text.split('\n').map(row => row.split(','));
-                console.log('Parsed values:', rows);
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const rows = doc.querySelectorAll('table tbody tr');
+                const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
 
-                updateBox(rows);
+                console.log('Parsed values:', values);
+
+                updateBox(values);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
