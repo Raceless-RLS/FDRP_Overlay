@@ -10,6 +10,11 @@
             width: 100px;
             height: 100px;
             background-color: red;
+            color: white; /* Text color for "OMT" */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
             transition: transform 1s ease-in-out;
             left: 50%;
             top: 50%;
@@ -50,23 +55,28 @@
         function updateBox(values) {
             const box = document.getElementById('box');
             let position = 'omt'; // Default position
+            let text = ''; // Default text
 
             console.log('Updating box with values:', values);
 
-            // Skip the header row and check the relevant columns (B, C, D) for "X"
+            // Check the relevant columns (B, C, D) for "X"
             values.slice(1).forEach(row => {
                 console.log('Row data:', row);
                 if (row[1].toLowerCase() === 'x') { // Check if "X" is in the "left" column (B)
                     position = 'left';
+                    text = '';
                 } else if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "omt" column (C)
                     position = 'omt';
+                    text = 'OMT';
                 } else if (row[3].toLowerCase() === 'x') { // Check if "X" is in the "right" column (D)
                     position = 'right';
+                    text = '';
                 }
             });
 
             console.log('Setting box position:', position);
             box.className = 'box ' + position;
+            box.innerText = text; // Set the text to "OMT" if applicable
         }
 
         setInterval(fetchData, 5000); // Fetch data every 5 seconds
