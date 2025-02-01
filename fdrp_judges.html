@@ -44,17 +44,14 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSPUuDmSP6GI7k4g7E3qvzWk5FpupMyuiq1oCI1qCC-Xr98CjmneuqrdJoQre4QYGe8ZayAGtAv-1f7/pubhtml?gid=0&single=true');
+                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSPUuDmSP6GI7k4g7E3qvzWk5FpupMyuiq1oCI1qCC-Xr98CjmneuqrdJoQre4QYGe8ZayAGtAv-1f7/pub?output=csv');
                 const text = await response.text();
                 console.log('Fetched data:', text);
 
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const rows = doc.querySelectorAll('table tbody tr');
-                const values = Array.from(rows).map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
+                const rows = text.split('\n').map(row => row.split(','));
+                console.log('Parsed values:', rows);
 
-                console.log('Parsed values:', values);
-                updateBox(values);
+                updateBox(rows);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -71,27 +68,6 @@
             // Check the relevant columns (B, C, D) for "X"
             values.slice(1).forEach(row => {
                 console.log('Row data:', row);
-                if (row[1].toLowerCase() === 'x') { // Check if "X" is in the "left" column (B)
+                if (row[1].toLowerCase().trim() === 'x') { // Check if "X" is in the "left" column (B)
                     position = 'left';
                     text = '';
-                    hasX = true;
-                } else if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "omt" column (C)
-                    position = 'omt';
-                    text = 'OMT';
-                    hasX = true;
-                } else if (row[3].toLowerCase() === 'x') { // Check if "X" is in the "right" column (D)
-                    position = 'right';
-                    text = '';
-                    hasX = true;
-                }
-            });
-
-            console.log('Setting box position:', position);
-            box.className = 'box ' + position + (hasX ? '' : ' blink'); // Add blink class if no "X"
-            box.innerText = text; // Set the text to "OMT" if applicable
-        }
-
-        setInterval(fetchData, 5000); // Fetch data every 5 seconds
-    </script>
-</body>
-</html>
