@@ -53,8 +53,8 @@
 
             console.log('Updating box with values:', values);
 
-            // Check if there is an "X" in the relevant positions
-            values.forEach(row => {
+            // Skip the header row and check subsequent rows for "X"
+            values.slice(1).forEach(row => {
                 console.log('Row data:', row);
                 if (row[2].toLowerCase() === 'x') { // Check if "X" is in the "left" column
                     position = 'left';
